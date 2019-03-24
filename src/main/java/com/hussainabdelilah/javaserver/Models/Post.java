@@ -1,4 +1,4 @@
-package com.hussainabdelilah.javaserver;
+package com.hussainabdelilah.javaserver.Models;
 
 import org.springframework.data.annotation.Id;
 
