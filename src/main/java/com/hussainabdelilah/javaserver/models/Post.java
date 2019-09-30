@@ -1,29 +1,33 @@
-package com.hussainabdelilah.javaserver.Models;
+package com.hussainabdelilah.javaserver.models;
 
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
 
-public class Comment {
+public class Post {
 
     @Id
     private String id;
     private String userId;
-    private String postId;
     private String content;
+    private String picture;
     private Date createdAt;
+    private Date lastModified;
     private List<String> likedBy;
+    private boolean status;
 
-    public Comment() {}
+    public Post() {}
 
-    public Comment(String id, String userId, String postId, String content, Date createdAt, List<String> likedBy) {
+    public Post(String id, String userId, String content, String picture, Date createdAt, Date lastModified, List<String> likedBy, boolean status) {
         this.id = id;
         this.userId = userId;
-        this.postId = postId;
         this.content = content;
+        this.picture = picture;
         this.createdAt = createdAt;
+        this.lastModified = lastModified;
         this.likedBy = likedBy;
+        this.status = status;
     }
 
     public String getId() {
@@ -42,20 +46,20 @@ public class Comment {
         this.userId = userId;
     }
 
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getCreatedAt() {
@@ -66,6 +70,14 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
     public List<String> getLikedBy() {
         return likedBy;
     }
@@ -74,4 +86,11 @@ public class Comment {
         this.likedBy = likedBy;
     }
 
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

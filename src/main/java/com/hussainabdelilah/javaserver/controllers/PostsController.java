@@ -1,8 +1,8 @@
-package com.hussainabdelilah.javaserver.Controllers;
+package com.hussainabdelilah.javaserver.controllers;
 
 
-import com.hussainabdelilah.javaserver.Models.Post;
-import com.hussainabdelilah.javaserver.Services.PostsService;
+import com.hussainabdelilah.javaserver.models.Post;
+import com.hussainabdelilah.javaserver.services.api.PostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.hussainabdelilah.javaserver.Repositories;
+package com.hussainabdelilah.javaserver.repositories;
 
-import com.hussainabdelilah.javaserver.Models.Post;
+import com.hussainabdelilah.javaserver.models.Post;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
