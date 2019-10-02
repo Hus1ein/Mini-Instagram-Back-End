@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hussainabdelilah.javaserver.models.User;
+import com.hussainabdelilah.javaserver.services.api.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,10 +22,12 @@ import java.util.Date;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
+    private UserService userService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super();
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @Override
@@ -53,6 +57,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			roles.add(r.getAuthority());
 		});*/
 
+		User userModel = userService.findByUsername(user.getUsername());
+
         String jwt = JWT.create()
                 .withIssuer(request.getRequestURI())
                 .withSubject(user.getUsername())
@@ -62,7 +68,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter()
-                .print("{\"email\": " + "\"" + user.getUsername() + "\", \"token\": " + "\"" + jwt + "\"}");
+                .print("{\"email\": " + "\"" + user.getUsername() + "\", \"token\": " + "\"" + jwt + "\", \"id\": \"" + userModel.getId() + "\"}");
         response.getWriter()
                 .flush();
 

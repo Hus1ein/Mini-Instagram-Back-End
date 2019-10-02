@@ -14,8 +14,9 @@ public class File {
 
     @Id
     private String id;
-    private String name;
+    private String key;
     private String userId;
     private Date createdAt;
+    private String type; // profile or post
 
 }

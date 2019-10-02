@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface PostsRepository extends MongoRepository<Post, String> {
 
-    List<Post> findAllByUserIdAndStatusOrderByCreatedAtDesc(String userId, boolean status);
+    List<Post> findAllByUserIdInOrderByCreatedAtDesc(List<String> userId);
+    List<Post> findAllByUserIdOrderByCreatedAtDesc(String userId);
     Post findByIdAndUserIdAndStatus(String id, String userId, boolean status);
+    int countAllByUserId(String userId);
 }
