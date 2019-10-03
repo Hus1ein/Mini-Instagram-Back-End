@@ -19,4 +19,6 @@ public interface UserService {
 
     User resolveToken(String token);
 
+    void update(User user);
+
 }

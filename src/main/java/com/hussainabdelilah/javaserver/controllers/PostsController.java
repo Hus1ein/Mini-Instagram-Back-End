@@ -33,16 +33,27 @@ public class PostsController {
 
     @PostMapping("/")
     public ResponseEntity<?> createNewPost(@AuthenticationPrincipal Principal principal, @RequestBody Post post) {
-        Post newPost = postsService.create(post, principal.getName());
-        return new ResponseEntity<>(newPost, HttpStatus.CREATED);
+        return new ResponseEntity<>(postsService.create(post, principal.getName()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable("id") String id) {
-        this.postsService.deletePost(id);
+        postsService.deletePost(id);
         Map<String, String> message = new HashMap<>();
         message.put("message", "Deleted");
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity like(@AuthenticationPrincipal Principal principal, @RequestParam String postId) {
+        postsService.likePost(principal.getName(), postId);
+        return new ResponseEntity<>("liked", HttpStatus.OK);
+    }
+
+    @GetMapping("/remove-like")
+    public ResponseEntity removeLike(@AuthenticationPrincipal Principal principal, @RequestParam String postId) {
+        postsService.removeLike(principal.getName(), postId);
+        return new ResponseEntity<>("liked", HttpStatus.OK);
     }
 
 }

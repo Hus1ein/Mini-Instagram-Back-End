@@ -29,13 +29,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
 
-        if (userRepository.existsByUsername(user.getUsername())) {
+        if (userRepository.existsByUsernameIgnoreCase(user.getUsername())) {
             throw new RuntimeException("This email is already exists");
         }
 
         user.setId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setName(user.getName());
         user.setFollowers(new ArrayList<>());
         user.setFollowing(new ArrayList<>());
 
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Map<String, Object>> search(String currentUsername, String username) {
         User currentUser = findByUsername(currentUsername);
-        List<User> users = userRepository.findByUsernameLike(username);
+        List<User> users = userRepository.findByUsernameLikeIgnoreCase(username);
         List<Map<String, Object>> usersAsMap = new ArrayList<>();
         for (User user : users) {
             boolean canFollow = true;
@@ -122,6 +123,25 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByUsername(email);
 
+    }
+
+    @Override
+    public void update(User user) {
+        User currentUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User is not exist"));
+
+        if (user.getName() != null) {
+            currentUser.setName(user.getName());
+        }
+
+        if (user.getAbout() != null) {
+            currentUser.setAbout(user.getAbout());
+        }
+
+        if (user.getPhoto() != null) {
+            currentUser.setPhoto(user.getPhoto());
+        }
+
+        userRepository.save(currentUser);
     }
 
 }

@@ -9,16 +9,21 @@ import java.util.Map;
 public interface PostsService {
 
     List<Map<String, Object>> getAllPosts(String username);
+
     List<Map<String, Object>> getAllPostsByUserId(String userId);
 
     Post getPostById(String postId);
 
-    Post create(Post post, String username);
+    Map<String, Object> create(Post post, String username);
 
     void deletePost(String postId);
 
     String uploadImage(MultipartFile file, String username, String type);
 
-    public byte[] getFile(String id, String token);
+    byte[] getFile(String id, String token);
+
+    void likePost(String username, String postId);
+
+    void removeLike(String username, String postId);
 
 }

@@ -98,7 +98,7 @@ public class PostServiceImpl implements PostsService {
     }
 
     @Override
-    public Post create(Post post, String username) {
+    public Map<String, Object> create(Post post, String username) {
         User user = userService.findByUsername(username);
         post.setId(null);
         post.setUserId(user.getId());
@@ -108,7 +108,22 @@ public class PostServiceImpl implements PostsService {
         post.setLastModified(new Date());
         post.setLikedBy(new ArrayList<>());
         post.setStatus(true);
-        return postsRepository.insert(post);
+        postsRepository.insert(post);
+
+        Map<String, String> userAsMap = new HashMap<>();
+        userAsMap.put("id", user.getId());
+        userAsMap.put("name", user.getName());
+        userAsMap.put("photo", user.getPhoto());
+
+        Map<String, Object> postAsMap = new HashMap<>();
+        postAsMap.put("id", post.getId());
+        postAsMap.put("content", post.getContent());
+        postAsMap.put("picture", post.getPicture());
+        postAsMap.put("lastModified", post.getLastModified());
+        postAsMap.put("user", userAsMap);
+        postAsMap.put("likedBy", post.getLikedBy());
+
+        return postAsMap;
     }
 
     @Override
@@ -161,6 +176,30 @@ public class PostServiceImpl implements PostsService {
 
         return amazonClient.getImage(file.getKey());
 
+    }
+
+    @Override
+    public void likePost(String username, String postId) {
+
+        User user = userService.findByUsername(username);
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post is not exist"));
+
+        List<String> likes = post.getLikedBy();
+        likes.add(user.getId());
+
+        postsRepository.save(post);
+
+    }
+
+    @Override
+    public void removeLike(String username, String postId) {
+        User user = userService.findByUsername(username);
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post is not exist"));
+
+        List<String> likes = post.getLikedBy();
+        likes.remove(user.getId());
+
+        postsRepository.save(post);
     }
 
 
